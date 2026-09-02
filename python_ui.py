@@ -1,14 +1,23 @@
-from langchain_huggingface import HuggingFaceEndpoint
+from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from dotenv import load_dotenv
 import streamlit as st
 
 load_dotenv()
 
-st.header('summary tool')
+st.header("Summary Tool")
 
-user_in=st.text_input('enter prompt')
+llm = HuggingFaceEndpoint(
+    repo_id="deepseek-ai/DeepSeek-V3-0324",
+    task="text-generation"
+)
 
-if st.button('summarize'):
-    st.text('text random')
+model = ChatHuggingFace(llm=llm)
 
-    
+user_in = st.text_input("Enter prompt")
+
+if st.button("Summarize"):
+    if user_in:
+        res = model.invoke(user_in)
+        st.write(res.content)
+    else:
+        st.warning("Please enter a prompt")
