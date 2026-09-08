@@ -1,3 +1,6 @@
+#PRACTISE OF RETURNING THE RESPONSE IN A STRUCTURED ORDERR
+#NO VALIDATION 
+
 from typing import TypedDict,Annotated
 class Person(TypedDict):
     name:str
@@ -23,6 +26,8 @@ model=ChatHuggingFace(llm=llm)
 class review(TypedDict):
     summary:Annotated[str,"a brief summary of review"] #string vbhejan with kya description
     sentiment:str
+    pros=Annotated[str,"wriet all pros inside list"]
+
 
 structed_model=model.with_structured_output(review)
 
