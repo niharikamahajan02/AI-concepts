@@ -29,8 +29,38 @@ templ=NakliPromptTemplate(
       input_variables=['topic']
     )
 
-prompt=templ.format({'topic':'india'})
+#prompt=templ.format({'topic':'india'})
+#
+#llm=NakliLLM()
+#ans=llm.predict(prompt)
+#print(ans)
+
+#prompt template and llm componnt ko jodna
+
+
+
+
+class NakliLLMChain:
+
+  def __init__(self, llm, prompt):
+    self.llm = llm
+    self.prompt = prompt
+
+  def run(self, input_dict):
+
+    final_prompt = self.prompt.format(input_dict)
+    result = self.llm.predict(final_prompt)
+
+    return result['response']
+
 
 llm=NakliLLM()
-ans=llm.predict(prompt)
+template=NakliPromptTemplate(
+  template='wriet abht{topic}',
+  input_variables=['topic']
+)
+
+chain=NakliLLMChain(llm,template)
+
+ans=chain.run({'topic':'indiaa'})
 print(ans)
