@@ -5,6 +5,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+from langchain_text_splitters import CharacterTextSplitter
+from langchain_community.document_loaders import PyPDFLoader
 load_dotenv()
 llm=HuggingFaceEndpoint(
   repo_id="openai/gpt-oss-120b"
@@ -20,16 +22,25 @@ prompt=PromptTemplate(
 parser=StrOutputParser()
 
 
-
 file_path = Path(__file__).parent / "cric.txt"
 
 loader = TextLoader(str(file_path), encoding="utf-8")
-docs = loader.load()
 
+loaderr=PyPDFLoader(Path(__file__).parent /'dl-curriculum.pdf')
+docs = loaderr.load()
+splitter = CharacterTextSplitter(
+    chunk_size=200,
+    chunk_overlap=0,
+    separator=''
+)
+
+result = splitter.split_documents(docs)
+
+print(result[0])
 chain=prompt | model |parser
 
-ans=chain.invoke({'poem':docs[0].page_content})
-print(ans)
+#ans=chain.invoke({'poem':docs[0].page_content})
+#print(ans)
 
-print(type(docs))
-print(docs[0].page_content)
+#print(type(docs))
+#print(docs[0].page_content)
