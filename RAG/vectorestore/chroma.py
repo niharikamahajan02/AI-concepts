@@ -51,3 +51,8 @@ vector_store.add_documents(docs)
 # view documents
 a=vector_store.get(include=['embeddings','documents', 'metadatas'])
 print(a)
+
+vector_store.similarity_search(
+    query='Who among these are a bowler?',
+    k=2
+)
